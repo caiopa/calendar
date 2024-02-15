@@ -1,15 +1,12 @@
 'use client';
 
 import Calendar from '@toast-ui/react-calendar/ie11';
-import { TZDate } from '@toast-ui/calendar';
 import type { EventObject, ExternalEventTypes } from '@toast-ui/calendar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { theme } from '@/utils/theme';
 
 
 type ViewType = 'month' | 'week' | 'day';
-const today = new TZDate();
-
 
 export default function App({ view }: { view: ViewType }) {
   const calendarRef = useRef<typeof Calendar>(null);
@@ -79,7 +76,6 @@ export default function App({ view }: { view: ViewType }) {
 
   const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res: { title: any; }) => {
     console.group('onAfterRenderEvent');
-    console.log('Event Info : ', res.title);
     console.groupEnd();
   };
 
@@ -87,7 +83,6 @@ export default function App({ view }: { view: ViewType }) {
     res: { title?: any; id?: any; calendarId?: any; }
   ) => {
     console.group('onBeforeDeleteEvent');
-    console.log('Event Info : ', res.title);
     console.groupEnd();
 
     const { id, calendarId } = res;
@@ -105,7 +100,6 @@ export default function App({ view }: { view: ViewType }) {
 
   const onClickDayName: ExternalEventTypes['clickDayName'] = (res: { date: any; }) => {
     console.group('onClickDayName');
-    console.log('Date : ', res.date);
     console.groupEnd();
   };
 
@@ -122,8 +116,6 @@ export default function App({ view }: { view: ViewType }) {
 
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res: { nativeEvent: any; event: any; }) => {
     console.group('onClickEvent');
-    console.log('MouseEvent : ', res.nativeEvent);
-    console.log('Event Info : ', res.event);
     console.groupEnd();
   };
 
@@ -145,7 +137,6 @@ export default function App({ view }: { view: ViewType }) {
     updateData: EventObject
   ) => {
     console.group('onBeforeUpdateEvent');
-    console.log(updateData);
     console.groupEnd();
     const { event:{ id, calendarId, title, start, end} } = updateData;
 
@@ -154,12 +145,8 @@ export default function App({ view }: { view: ViewType }) {
 
     console.log('target evento',targetEvent);
     
-    console.log('antigo evento',updateData.event.start.d.d);
-    console.log('changes',changes);
-    
-    const verififyDateStart = (d: any) => {
-      console.log(d);
-      
+   
+    const verififyDateStart = (d: any) => { 
       if (d) {
         return changes.start.d.d 
       } else {
@@ -167,8 +154,6 @@ export default function App({ view }: { view: ViewType }) {
       }
     };
     const verififyDateEnd = (d: any) => {
-       console.log(d);
-       
       if (d) {
         return changes.end.d.d
       } else {
@@ -189,7 +174,6 @@ export default function App({ view }: { view: ViewType }) {
       start: verififyDateStart(changes.start?.d.d),
       end: verififyDateEnd(changes.end?.d.d),
     }
-    console.log('new evento',newEvent);
     
 
     getCalInstance().updateEvent(
@@ -223,16 +207,13 @@ export default function App({ view }: { view: ViewType }) {
       },
       body: JSON.stringify(event),
     })
-
     
     setInitialEvents([...initialEvents, event]);
     
-
     getCalInstance().createEvents([event]);
   }
 
   
-
   return (
     <div>
       <h1>TOAST UI Calendar + React.js</h1>
